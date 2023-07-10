@@ -1,7 +1,7 @@
 dic1 = {"A+":4.3, "A":4.0, "A-":3.7, "B+":3.3, "B":3.0, "B-":2.7, "C+":2.3, "C":2.0, "C-":1.7, "D":1.0, "E":0.0, "X":0.0}
 dic2 = {}
 dic3 = {}
-dic4 = {"GE":0, "FE":0, "廢物國文":0}
+dic4 = {"GE":0, "FE":0, "廢物國文":0, "PE":0}
 
 with open("gpa.csv", "r") as putin: #直接把成績查詢那邊複製下來 放到gpa.csv
 
@@ -25,6 +25,8 @@ with open("gpa.csv", "r") as putin: #直接把成績查詢那邊複製下來 放
                     dic4["GE"] += int(temp[4])
                 if temp[2].startswith("CC") and len(temp[2]) == 9:
                     dic4["廢物國文"] += int(temp[4])
+                if temp[2].startswith("PE"):
+                    dic4["PE"] += 1
                 if temp[5] not in dic2 and temp[5] not in dic3:
                     dic2.setdefault(temp[5], 1)
                     dic3.setdefault(temp[5], int(temp[4]))
@@ -70,4 +72,11 @@ with open("gpa.csv", "r") as putin: #直接把成績查詢那邊複製下來 放
             else:
                 g = 6 - dic4["廢物國文"]
                 print(f"廢物國文: You need {g} credits.") if g > 1 else print(f"廢物國文: You need {g} credit.")
+            print("-" * 50)
+
+            if dic4["PE"] == 6:
+                print("You've passed threshold of PE.")
+            else:
+                g = 6 - dic4["PE"]
+                print(f"PE: You need {g} courses.") if g > 1 else print(f"PE: You need {g} course.")
             print("-" * 50)
