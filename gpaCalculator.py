@@ -3,6 +3,31 @@ dic2 = {}
 dic3 = {}
 dic4 = {"GE":0, "FE":0, "廢物國文":0, "PE":0}
 
+
+def fun1(temp):
+    temp[4] = abs(int(temp[4]))
+    if temp[6] != "不及格":
+        fun2(temp)
+    else:
+        fun3(temp)
+
+def fun2(temp):
+    if temp[7] != "":
+        dic4["GE"] += temp[4]
+    if temp[2].startswith("CC") and len(temp[2]) == 9:
+        dic4["廢物國文"] += temp[4]
+    if temp[2].startswith("PE"):
+        dic4["PE"] += 1
+    fun3(temp)
+
+def fun3(temp):
+    if temp[5] not in dic2 and temp[5] not in dic3:
+        dic2.setdefault(temp[5], 1)
+        dic3.setdefault(temp[5], temp[4])
+    else:
+        dic2[temp[5]] += 1
+        dic3[temp[5]] += temp[4]   
+
 with open("gpa.csv", "r") as putin: #直接把成績查詢那邊複製下來 放到gpa.csv
 
     while True:
@@ -17,22 +42,12 @@ with open("gpa.csv", "r") as putin: #直接把成績查詢那邊複製下來 放
         for i in putin.readlines():
             temp = i.split(",")
 
-            if temp[2].startswith("CC") and temp[3].startswith("英") and temp[6] != "免修" or temp[2].startswith("FE"):
+            if temp[6] != "二次退選" and temp[6] != "抵免" and temp[6] != "免修" and temp[5] != "成績未到":
+                fun1(temp)
+
+            if (temp[2].startswith("CC") and temp[3].startswith("英") and temp[6] != "免修" or temp[2].startswith("FE")) and temp[6] != "不及格":
                 dic4["FE"] += int(temp[4])
 
-            if temp[6] != "二次退選" and temp[6] != "抵免" and temp[6] != "免修" and temp[5] != "成績未到":
-                if temp[7] != "":
-                    dic4["GE"] += int(temp[4])
-                if temp[2].startswith("CC") and len(temp[2]) == 9:
-                    dic4["廢物國文"] += int(temp[4])
-                if temp[2].startswith("PE"):
-                    dic4["PE"] += 1
-                if temp[5] not in dic2 and temp[5] not in dic3:
-                    dic2.setdefault(temp[5], 1)
-                    dic3.setdefault(temp[5], int(temp[4]))
-                else:
-                    dic2[temp[5]] += 1
-                    dic3[temp[5]] += int(temp[4])
         total = 0
         totalCredit = 0
         for grade, credit in dic3.items():
