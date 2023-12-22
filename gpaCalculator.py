@@ -83,19 +83,20 @@ def printTotal(ques):
     if ques == "r":
         myPrint()
 
-with open("gpa.csv", "r") as putin: #直接把成績查詢那邊複製下來 放到gpa.csv
+if __name__ == "__main__":
+    with open("gpa.csv", "r") as putin: #直接把成績查詢那邊複製下來 放到gpa.csv
 
-    while True:
-        ques = input("Do you want to study abroad? (please enter Y or N or R and enter E to exit)\n").lower()
-        if ques == "e": break
+        while True:
+            ques = input("Do you want to study abroad? (please enter Y or N or R and enter E to exit)\n").lower()
+            if ques == "e": break
 
-        for i in putin.readlines():
-            temp = i.split(",")
+            for i in putin.readlines():
+                temp = i.split(",")
 
-            if temp[6] != "二次退選" and temp[6] != "抵免" and temp[6] != "免修" and temp[5] != "成績未到":
-                fun1(temp)
+                if temp[6] != "二次退選" and temp[6] != "抵免" and temp[6] != "免修" and temp[5] != "成績未到":
+                    fun1(temp)
 
-            if (temp[2].startswith("CC") and temp[3].startswith("英") and temp[6] != "免修" or temp[2].startswith("FE")) and temp[6] != "不及格":
-                dic4["FE"] += int(temp[4])
+                if (temp[2].startswith("CC") and temp[3].startswith("英") and temp[6] != "免修" or temp[2].startswith("FE")) and temp[6] != "不及格":
+                    dic4["FE"] += int(temp[4])
 
-        printTotal(ques)
+            printTotal(ques)
