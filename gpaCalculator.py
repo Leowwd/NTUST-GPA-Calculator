@@ -83,15 +83,17 @@ def printTotal(ques):
     if ques == "r":
         myPrint()
 
-if __name__ == "__main__":
+def main():
     with open("gpa.csv", "r") as putin: #直接把成績查詢那邊複製下來 放到gpa.csv
-
         while True:
             ques = input("Do you want to study abroad? (please enter Y or N or R and enter E to exit)\n").lower()
             if ques == "e": break
 
             for i in putin.readlines():
                 temp = i.split(",")
+
+                if temp[3] == "社會實踐":
+                    continue
 
                 if temp[6] != "二次退選" and temp[6] != "抵免" and temp[6] != "免修" and temp[5] != "成績未到":
                     fun1(temp)
@@ -100,3 +102,5 @@ if __name__ == "__main__":
                     dic4["FE"] += int(temp[4])
 
             printTotal(ques)
+if __name__ == "__main__":
+    main()
